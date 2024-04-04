@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="477.0" prefWidth="653.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="gui.ProductListController">
+   <children>
+      <TableView fx:id="tbProducts" layoutY="50.0" prefHeight="370.0" prefWidth="653.0">
+        <columns>
+          <TableColumn fx:id="cName" prefWidth="75.0" text="Name" />
+          <TableColumn fx:id="cPrice" prefWidth="75.0" text="Price" />
+            <TableColumn fx:id="cDate" prefWidth="124.0" text="Date of Fabrication" />
+            <TableColumn fx:id="cQuantity" prefWidth="75.0" text="Quantity" />
+            <TableColumn fx:id="cImage" prefWidth="170.0" text="Image" />
+        </columns>
+      </TableView>
+      <Label layoutX="47.0" layoutY="14.0" text="Product List">
+         <font>
+            <Font name="System Bold" size="22.0" />
+         </font>
+      </Label>
+      <Button layoutX="48.0" layoutY="430.0" mnemonicParsing="false" onAction="#Create" style="-fx-background-color: #0056b3;" text="Create New Product" textFill="WHITE" />
+   </children>
+</AnchorPane>

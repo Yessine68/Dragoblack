@@ -10,13 +10,14 @@ import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import services.ProductService;
 
 /**
@@ -24,7 +25,7 @@ import services.ProductService;
  *
  * @author Adam baba
  */
-public class CreateProductController implements Initializable {
+public class ModifyProductController implements Initializable {
 
     ProductService ps = new ProductService();
 
@@ -39,6 +40,10 @@ public class CreateProductController implements Initializable {
     @FXML
     private TextField quantityTF;
 
+    private Product selectedProduct;
+    @FXML
+    private Label modifLabel;
+
     /**
      * Initializes the controller class.
      */
@@ -47,25 +52,25 @@ public class CreateProductController implements Initializable {
         // TODO
     }
 
+    public void initData(Product product) {
+        selectedProduct = product;
+        System.out.println(product);
+        // Populate the text fields with voyage data
+        nameTF.setText(selectedProduct.getName());
+        dateTF.setText(selectedProduct.getDatefabrication());
+        priceTF.setText(String.valueOf(selectedProduct.getPrice()));
+        quantityTF.setText(String.valueOf(selectedProduct.getQuantite()));
+
+    }
+
     @FXML
-    private void Create(ActionEvent event) {
+    private void Update(ActionEvent event) {
         String name = nameTF.getText();
         String price = priceTF.getText();
         String date = dateTF.getText();
         String quantity = quantityTF.getText();
-        String ProductImage = ""; // Initialize with an empty string for now
+        String ProductImage = selectedProduct.getImage();
 
-        if (selectedFile == null) {
-            System.out.println("No file selected.");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select a file");
-            alert.showAndWait();
-        }
-
-        ProductImage = selectedFile.toURI().toString();
-        System.out.println("Selected file: " + ProductImage);
         if (name.isEmpty() || price.isEmpty() || date.isEmpty() || quantity.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -79,24 +84,34 @@ public class CreateProductController implements Initializable {
             alert.setContentText("Please enter valid information.");
             alert.showAndWait();
         } else {
+
+            int priceInt = Integer.parseInt(price);
+            int quantityInt = Integer.parseInt(quantity);
+            int likes = 0;
+            selectedProduct.setPrice(priceInt);
+            selectedProduct.setQuantite(quantityInt);
+            selectedProduct.setLikes(likes);
+            selectedProduct.setName(name);
+            selectedProduct.setImage(ProductImage);
+            selectedProduct.setDatefabrication(date);
+
+            ProductService productService = new ProductService();
+
             try {
-                int priceInt = Integer.parseInt(price);
-                int quantityInt = Integer.parseInt(quantity);
-                int likes = 0;
-                Product pro = new Product(priceInt, quantityInt, likes, name, ProductImage, date);
-                // price, quantite, likes, name, image, datefabrication
-                ps.ajouter(pro);
-                System.out.println("Product ajouté avec succès.");
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Validé");
-                alert.setHeaderText(null);
-                alert.setContentText("Product ajouté !");
-                alert.showAndWait();
-            } catch (SQLException e) {
-                System.out.println("Erreur lors de l'ajout du Product: " + e.getMessage());
-                // Handle SQLException
+                productService.modifier(selectedProduct);
+                // Close the window after successful update
+                Stage stage = (Stage) modifLabel.getScene().getWindow();
+                stage.close();
+                // Refresh the table in GestionVoyageController
+                ProductListController.getInstance().refreshTable();
+
+            } catch (SQLException ex) {
+                // Handle exception, e.g., display an error message
+                System.out.println("Error updating voyage: " + ex.getMessage());
             }
+
         }
+
     }
 
     @FXML

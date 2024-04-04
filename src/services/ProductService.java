@@ -42,10 +42,10 @@ public class ProductService implements IService<Product> {
         ps.setInt(1, t.getPrice());
         ps.setInt(2, t.getQuantite());
         ps.setInt(3, t.getLikes());
-        ps.setString(5, t.getName());
-        ps.setString(6, t.getImage());
-        ps.setString(7, t.getDatefabrication());
-        ps.setInt(8, t.getId());
+        ps.setString(4, t.getName());
+        ps.setString(5, t.getImage());
+        ps.setString(6, t.getDatefabrication());
+        ps.setInt(7, t.getId());
         ps.executeUpdate();
     }
 

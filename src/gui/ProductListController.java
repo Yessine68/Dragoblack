@@ -6,6 +6,7 @@
 package gui;
 
 import entities.Product;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -17,7 +18,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -26,6 +30,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import services.ProductService;
 
 /**
@@ -34,6 +39,8 @@ import services.ProductService;
  * @author Adam baba
  */
 public class ProductListController implements Initializable {
+
+    private static ProductListController instance;
 
     @FXML
     private TableView<Product> tbProducts;
@@ -53,6 +60,8 @@ public class ProductListController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        instance = this;
+
         try {
             ListeProducts();
         } catch (SQLException ex) {
@@ -82,9 +91,8 @@ public class ProductListController implements Initializable {
                 break;
             }
         }
-        
-        
-                if (!deleteColumnExists) {
+
+        if (!deleteColumnExists) {
             TableColumn<Product, Void> deleteColumn = new TableColumn<>("Action");
             deleteColumn.setCellFactory(column -> {
                 return new TableCell<Product, Void>() {
@@ -130,12 +138,47 @@ public class ProductListController implements Initializable {
 
             tbProducts.getColumns().add(deleteColumn);
         }
-                
-                
-                
 
-        
-        
+        if (!ModifyColumnExists) {
+            TableColumn<Product, Void> modifyColumn = new TableColumn<>("Update");
+            modifyColumn.setCellFactory(column -> {
+                return new TableCell<Product, Void>() {
+                    private final Button modifyButton = new Button("Modify");
+
+                    {
+                        modifyButton.setOnAction(event -> {
+                            Product selectedProduct = getTableView().getItems().get(getIndex());
+                            // Navigate to updateVoyage.fxml with the selected voyage
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("ModifyProduct.fxml"));
+                            Parent root;
+                            try {
+                                root = loader.load();
+                                ModifyProductController controller = loader.getController();
+                                controller.initData(selectedProduct);
+                                Stage stage = new Stage();
+                                stage.setScene(new Scene(root));
+                                stage.show();
+                            } catch (IOException ex) {
+                                Logger.getLogger(ProductListController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(modifyButton);
+                        }
+                    }
+                };
+            });
+
+            tbProducts.getColumns().add(modifyColumn);
+        }
+
         // Load voyages from the database
         List<Product> list = ps.recuperer();
         System.out.println(list);
@@ -146,10 +189,26 @@ public class ProductListController implements Initializable {
 
     @FXML
     private void Create(ActionEvent event) {
-    }
-    
-        public void refreshTable() {
         try {
+            // Load GestionVoyage.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("CreateProduct.fxml"));
+            Parent root = loader.load();
+
+            // Get the stage from the event source
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+
+            // Create a new scene with GestionVoyage.fxml content and set it to the stage
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void refreshTable() {
+        try {
+            System.out.println("gui.ProductListController.refreshTable()");
             productsList = new ProductService().recuperer();
             tbProducts.setItems(FXCollections.observableArrayList(productsList));
         } catch (SQLException ex) {
@@ -157,4 +216,7 @@ public class ProductListController implements Initializable {
         }
     }
 
+    public static ProductListController getInstance() {
+        return instance;
+    }
 }

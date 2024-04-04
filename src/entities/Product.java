@@ -13,12 +13,22 @@ import java.sql.Date;
  */
 public class Product {
     
-    private int id,price,quantite,likes,panier_id ;
+    private int id,price,quantite,likes ;
     private String name,image;
-    private Date datefabrication;
+    private String datefabrication;
 
-    public Product(int id, int price, int quantite, int likes , String name, String image, Date datefabrication) {
+    public Product(int id, int price, int quantite, int likes , String name, String image, String datefabrication) {
         this.id = id;
+        this.price = price;
+        this.quantite = quantite;
+        this.likes = likes;
+        this.name = name;
+        this.image = image;
+        this.datefabrication = datefabrication;
+    }
+    
+        public Product( int price, int quantite, int likes , String name, String image, String datefabrication) {
+ 
         this.price = price;
         this.quantite = quantite;
         this.likes = likes;
@@ -61,13 +71,7 @@ public class Product {
         this.likes = likes;
     }
 
-    public int getPanier_id() {
-        return panier_id;
-    }
 
-    public void setPanier_id(int panier_id) {
-        this.panier_id = panier_id;
-    }
 
     public String getName() {
         return name;
@@ -85,17 +89,17 @@ public class Product {
         this.image = image;
     }
 
-    public Date getDatefabrication() {
+    public String getDatefabrication() {
         return datefabrication;
     }
 
-    public void setDatefabrication(Date datefabrication) {
+    public void setDatefabrication(String datefabrication) {
         this.datefabrication = datefabrication;
     }
 
     @Override
     public String toString() {
-        return "Product{" + "id=" + id + ", price=" + price + ", quantite=" + quantite + ", likes=" + likes + ", panier_id=" + panier_id + ", name=" + name + ", image=" + image + ", datefabrication=" + datefabrication + '}';
+        return "Product{" + "id=" + id + ", price=" + price + ", quantite=" + quantite + ", likes=" + likes + ", name=" + name + ", image=" + image + ", datefabrication=" + datefabrication + '}';
     }
     
     

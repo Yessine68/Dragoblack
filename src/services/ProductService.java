@@ -24,29 +24,27 @@ public class ProductService implements IService<Product> {
 
     @Override
     public void ajouter(Product t) throws SQLException {
-        String req = "INSERT INTO product(price, quantite, likes, panier_id, name, image, datefabrication) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String req = "INSERT INTO product(price, quantite, likes, name, image, datefabrication) VALUES(?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = cnx.prepareStatement(req);
         ps.setInt(1, t.getPrice());
         ps.setInt(2, t.getQuantite());
         ps.setInt(3, t.getLikes());
-        ps.setInt(4, t.getPanier_id());
-        ps.setString(5, t.getName());
-        ps.setString(6, t.getImage());
-        ps.setDate(7, t.getDatefabrication());
+        ps.setString(4, t.getName());
+        ps.setString(5, t.getImage());
+        ps.setString(6, t.getDatefabrication());
         ps.executeUpdate();
     }
 
     @Override
     public void modifier(Product t) throws SQLException {
-        String req = "UPDATE product SET price = ?, quantite = ?, likes = ?, panier_id = ?, name = ?, image = ?, datefabrication = ? WHERE id = ?";
+        String req = "UPDATE product SET price = ?, quantite = ?, likes = ?, name = ?, image = ?, datefabrication = ? WHERE id = ?";
         PreparedStatement ps = cnx.prepareStatement(req);
         ps.setInt(1, t.getPrice());
         ps.setInt(2, t.getQuantite());
         ps.setInt(3, t.getLikes());
-        ps.setInt(4, t.getPanier_id());
         ps.setString(5, t.getName());
         ps.setString(6, t.getImage());
-        ps.setDate(7, t.getDatefabrication());
+        ps.setString(7, t.getDatefabrication());
         ps.setInt(8, t.getId());
         ps.executeUpdate();
     }
@@ -81,7 +79,7 @@ public class ProductService implements IService<Product> {
                     rs.getInt("likes"),
                     rs.getString("name"),
                     rs.getString("image"),
-                    rs.getDate("datefabrication")
+                    rs.getString("datefabrication")
             );
             products.add(product);
         }

@@ -130,6 +130,9 @@ public class ProductListController implements Initializable {
 
             tbProducts.getColumns().add(deleteColumn);
         }
+                
+                
+                
 
         
         

@@ -7,8 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="477.0" prefWidth="653.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="gui.ProductListController">
+<AnchorPane id="AnchorPane" prefHeight="477.0" prefWidth="653.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProductListController">
    <children>
       <TableView fx:id="tbProducts" layoutY="50.0" prefHeight="370.0" prefWidth="653.0">
         <columns>
@@ -16,7 +15,6 @@
           <TableColumn fx:id="cPrice" prefWidth="75.0" text="Price" />
             <TableColumn fx:id="cDate" prefWidth="124.0" text="Date of Fabrication" />
             <TableColumn fx:id="cQuantity" prefWidth="75.0" text="Quantity" />
-            <TableColumn fx:id="cImage" prefWidth="170.0" text="Image" />
         </columns>
       </TableView>
       <Label layoutX="47.0" layoutY="14.0" text="Product List">

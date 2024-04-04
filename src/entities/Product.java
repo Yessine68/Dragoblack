@@ -17,26 +17,17 @@ public class Product {
     private String name,image;
     private Date datefabrication;
 
-    public Product(int id, int price, int quantite, int likes, int panier_id, String name, String image, Date datefabrication) {
+    public Product(int id, int price, int quantite, int likes , String name, String image, Date datefabrication) {
         this.id = id;
         this.price = price;
         this.quantite = quantite;
         this.likes = likes;
-        this.panier_id = panier_id;
         this.name = name;
         this.image = image;
         this.datefabrication = datefabrication;
     }
 
-    public Product(int price, int quantite, int likes, int panier_id, String name, String image, Date datefabrication) {
-        this.price = price;
-        this.quantite = quantite;
-        this.likes = likes;
-        this.panier_id = panier_id;
-        this.name = name;
-        this.image = image;
-        this.datefabrication = datefabrication;
-    }
+
 
     public int getId() {
         return id;

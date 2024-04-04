@@ -58,6 +58,14 @@ public class ProductService implements IService<Product> {
         ps.setInt(1, t.getId());
         ps.executeUpdate();
     }
+    
+        public void aaaa(int id) throws SQLException {
+            System.out.println(id);
+        String query = "DELETE FROM product WHERE id = ?";
+        PreparedStatement stmt = cnx.prepareStatement(query);
+        stmt.setInt(1, id);
+        stmt.executeUpdate();
+    }
 
     @Override
     public List<Product> recuperer() throws SQLException {

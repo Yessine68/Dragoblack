@@ -67,6 +67,13 @@ public class ProductListController implements Initializable {
         } catch (SQLException ex) {
             Logger.getLogger(ProductListController.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        // Add event handler to TableView to detect row selection
+        tbProducts.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                showProductDetails(newSelection);
+            }
+        });
     }
 
     private List<Product> productsList;
@@ -218,5 +225,22 @@ public class ProductListController implements Initializable {
 
     public static ProductListController getInstance() {
         return instance;
+    }
+    
+    // Method to show product details in AfficherProductController
+    private void showProductDetails(Product selectedProduct) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AfficherProduct.fxml"));
+            Parent root = loader.load();
+            
+            AfficherProductController controller = loader.getController();
+            controller.initData(selectedProduct);
+            
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
